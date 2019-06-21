@@ -6,10 +6,11 @@ simple loop version for test
 
 import time
 import numpy as np
-from geometry import *
-from components import *
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
+
+from geometry import *
+from optics import *
 
 # test case
 primary = np.array([0., 0., 1.], dtype=np.float32)
