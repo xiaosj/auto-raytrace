@@ -27,7 +27,7 @@ fig, ax = plt.subplots(figsize=(7,4), dpi=100, facecolor='white')
 plt.ion()
 for i in range(10):
   ax.clear()
-  M1K3.A -= 0.002
+  M1K3.setA(M1K3.A - 0.002)
   PC1K3.setXYfromMirror(M1K3)
   xmin =  np.inf
   xmax = -np.inf
@@ -58,6 +58,6 @@ for i in range(10):
   fig.canvas.draw()
   fig.canvas.flush_events()
   plt.pause(0.001)
-  time.sleep(0.3)
+  time.sleep(0.8)
 
 plt.show()
