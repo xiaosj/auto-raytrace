@@ -73,7 +73,8 @@ class FlatMirror():
     """
     if(self.horizontal):  # horizontal reflection
       # mirror body
-      rot =g.rot2D(self.A)
+      Atotal = self.A + np.arctan(self.inp[0] / self.inp[2]) 
+      rot =g.rot2D(Atotal)
       p0 = np.array([self.loc[2], self.loc[0]])
       v1 = rot.dot([self.half_size[2], 0.])
       v2 = rot.dot([0., -self.sign * self.half_size[0]])
@@ -87,9 +88,9 @@ class FlatMirror():
 
       # mirror motion range
       #  ** this part needs to be fixed to take +/- dA **
-      dz  = self.half_size[2] * np.cos(self.A - self.dA[1])
-      dx1 = self.half_size[2] * np.sin(np.abs(self.A) + self.dA[1])
-      dx2 = self.half_size[2] * np.sin(np.abs(self.A) - self.dA[1])
+      dz  = self.half_size[2] * np.cos(Atotal - self.dA[1])
+      dx1 = self.half_size[2] * np.sin(np.abs(Atotal) + self.dA[1])
+      dx2 = self.half_size[2] * np.sin(np.abs(Atotal) - self.dA[1])
       range_segs = np.array([
                       (self.loc[2] + dz,
                        self.loc[0] + (self.trans[0] + dx1) * self.sign),
