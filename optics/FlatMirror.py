@@ -56,6 +56,16 @@ class FlatMirror():
     self.ntrans = ntrans
     self._initSurfaces()
 
+
+  def setA(self, newA):
+    self.A = newA
+    if(self.horizontal):
+      self.norm = np.array([np.cos(self.A)*self.sign, 0., -np.abs(np.sin(self.A))], dtype=np.float32)
+    else:
+      self.norm = np.array([0., np.cos(self.A)*self.sign, -np.abs(np.sin(self.A))], dtype=np.float32)
+    self.out = g.Reflection(self.inp, self.norm)
+
+
   def _initSurfaces(self):
     # initialize mirror reflection and front surfaces on each dvision
     self.refl = np.zeros((self.ndA*self.ntrans, 6), dtype=np.float32)
