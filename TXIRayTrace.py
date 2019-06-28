@@ -1,7 +1,6 @@
 import time
 import numpy as np 
 import matplotlib.pyplot as plt
-from geometry import *
 from optics import *
 
 
@@ -9,13 +8,13 @@ primary = np.array ([0., 0., 1.], dtype=np.float32)
 PC2S  = Collimator('PC2S', (1.2500, 0.0, 731.145), 0.016, 0.055)
 M1K3  = FlatMirror('M1K3',
                    location=(1.2500, 0.0, 735.422), size=(0.02, 0.02, 1.0),
-                   direction='x', A=-0.009, deltaA=(-0.00015, 0.00015),
+                   direction='x', A=-0.0098468, deltaA=(-0.00015, 0.00015),
                    translation=(-0.001, 0.001), incidentNorm=primary)
 primary = M1K3.out
 print(primary)
 M2K3  = FlatMirror('M2K3',
                    location=(1.2184, 0.0, 737.022), size=(0.02, 0.02, 1.0),
-                   direction='x', A=-0.009, deltaA=(-0.00015, 0.00015),
+                   direction='x', A=-0.0098468, deltaA=(-0.00015, 0.00015),
                    translation=(-0.001, 0.001), incidentNorm=primary)
 
 primary = M2K3.out

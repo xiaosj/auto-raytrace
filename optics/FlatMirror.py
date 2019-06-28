@@ -39,16 +39,16 @@ class FlatMirror():
     self.loc = np.array(location, dtype=np.float32)
     self.half_size = np.array(size, dtype=np.float32) * 0.5
     self.sign = 1 if(A > 0) else -1
+    self.A = A + np.arctan(incidentNorm[0] / incidentNorm[2]) 
+    self.dA = np.array(deltaA, dtype=np.float32)
     if(direction == 'x' or direction == 'X'):
       self.horizontal = True
-      self.norm = np.array([np.cos(A)*self.sign, 0., -np.abs(np.sin(A))], dtype=np.float32)
+      self.norm = np.array([np.cos(self.A)*self.sign, 0., -np.abs(np.sin(self.A))], dtype=np.float32)
     elif(direction == 'y' or direction == 'Y'):
       self.horizontal = False
-      self.norm = np.array([0., np.cos(A)*self.sign, -np.abs(np.sin(A))], dtype=np.float32)
+      self.norm = np.array([0., np.cos(self.A)*self.sign, -np.abs(np.sin(self.A))], dtype=np.float32)
     else:
       raise ('Wrong direction {:}.  Must be X or Y'.format(direction))
-    self.A = A
-    self.dA = np.array(deltaA, dtype=np.float32)
     self.trans = np.array(translation, dtype=np.float32)
     self.inp = g.VectorNormalize(incidentNorm)        # primary input  beam (normalized)
     self.out = g.Reflection(incidentNorm, self.norm)  # primary output beam (normalized)
@@ -83,8 +83,7 @@ class FlatMirror():
     """
     if(self.horizontal):  # horizontal reflection
       # mirror body
-      Atotal = self.A + np.arctan(self.inp[0] / self.inp[2]) 
-      rot =g.rot2D(Atotal)
+      rot = g.rot2D(self.A)
       p0 = np.array([self.loc[2], self.loc[0]])
       v1 = rot.dot([self.half_size[2], 0.])
       v2 = rot.dot([0., -self.sign * self.half_size[0]])
@@ -98,9 +97,9 @@ class FlatMirror():
 
       # mirror motion range
       #  ** this part needs to be fixed to take +/- dA **
-      dz  = self.half_size[2] * np.cos(Atotal - self.dA[1])
-      dx1 = self.half_size[2] * np.sin(np.abs(Atotal) + self.dA[1])
-      dx2 = self.half_size[2] * np.sin(np.abs(Atotal) - self.dA[1])
+      dz  = self.half_size[2] * np.cos(self.A - self.dA[1])
+      dx1 = self.half_size[2] * np.sin(np.abs(self.A) + self.dA[1])
+      dx2 = self.half_size[2] * np.sin(np.abs(self.A) - self.dA[1])
       range_segs = np.array([
                       (self.loc[2] + dz,
                        self.loc[0] + (self.trans[0] + dx1) * self.sign),
