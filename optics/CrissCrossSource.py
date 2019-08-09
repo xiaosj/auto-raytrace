@@ -23,15 +23,19 @@ class CrissCrossSource():
     # upstream point
     theta1 = 2 * np.pi * np.random.rand()
     radius1 = np.sqrt(np.random.rand()) * self.size1 / 2
-    x1 = radius1 * np.cos(theta1) + self.loc1[2]
-    y1 = radius1 * np.sin(theta1) + self.loc1[0]
+    x1 = radius1 * np.cos(theta1) + self.loc1[0]
+    y1 = radius1 * np.sin(theta1) + self.loc1[1]
+    z1 = self.loc1[2]
 
     # downstream point
     theta2 =  2 * np.pi * np.random.rand()
     radius2 = np.sqrt(np.random.rand()) * self.size2 / 2
-    x2 = radius2 * np.cos(theta2) + self.loc2[2]
-    y2 = radius2 * np.sin(theta2) + self.loc2[0]
-    return np.array([[x1, y1], [x2, y2]])
+    x2 = radius2 * np.cos(theta2) + self.loc2[0]
+    y2 = radius2 * np.sin(theta2) + self.loc2[1]
+    z2 = self.loc2[2]
+
+    return np.array([[x1, y1, z1], [x2, y2, z2]])
+
 
   def drawZX(self):
     """ Draw component on the Z-X plane (horizontal)
@@ -44,4 +48,3 @@ class CrissCrossSource():
     self.draw_min = np.array([segs[:,:,1].min(), segs[:,:,0].min()])
     self.draw_max = np.array([segs[:,:,1].max(), segs[:,:,0].max()])
     return ls
-

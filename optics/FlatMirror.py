@@ -119,3 +119,17 @@ class FlatMirror():
       pass
     
     return ls
+
+  def transport(self, ray):
+    v0 = self.loc
+    n = self.norm
+    p0 = ray[0]
+    u = g.VectorNormalize(ray[1] - p0)
+    w = v0 - p0
+    s = n.dot(w) / n.dot(u)
+
+    ps = p0 + s * u
+
+    refl_u = g.Reflection(u, n)
+    output_ray = np.array([ps, ps + refl_u])
+    return output_ray

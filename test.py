@@ -26,7 +26,7 @@ PC1K3.setXYfromMirror(M1K3)
 comp_list = [Src, PC2S, M1K3, PC1K3]
 
 fig, ax = plt.subplots(figsize=(7,4), dpi=100, facecolor='white')
-for i in range(10):
+for i in range(1):
   ax.clear()
   M1K3.setA(M1K3.A - 0.002)
   PC1K3.setXYfromMirror(M1K3)
@@ -43,10 +43,25 @@ for i in range(10):
     if(zmax < comp.draw_max[1]):  zmax = comp.draw_max[1]
 
   # draw 5 random rays
-  for _ in range(5):
+  for ir in range(5):
     ray = Src.getOneRay()
-    ax.add_collection(LineCollection([ray], linewidths = 1, colors = 'blue'))
-  
+    # ray = np.array([[1.25, 0, 690], [1.25, 0, 731]])
+    print('Input ray', ir, ': ', ray)
+    ray_p0 = [ray[0,2], ray[0,0]]
+    ray_p1 = [ray[1,2], ray[1,0]]
+    ax.add_collection(LineCollection([
+          [ray_p0, ray_p1]
+          ], linewidths = 0.5, colors = 'blue'))
+    
+    out_ray = M1K3.transport(ray)
+    print('Output ray', ir, ': ', out_ray)
+    outray_p0 = [out_ray[0,2], out_ray[0,0]]
+    outray_p1 = [out_ray[1,2], out_ray[1,0]]
+    ax.add_collection(LineCollection([
+          [ray_p1, outray_p0],
+          [outray_p0, outray_p1]
+          ], linewidths = 0.5, colors = 'blue'))
+          
   # set drawing range with padding
   zpad = 0.02
   dz = zmax - zmin
@@ -56,8 +71,8 @@ for i in range(10):
   dx = xmax - xmin
   xmin -= xpad * dx
   xmax += xpad * dx
-  ax.set_xlim(xmin=zmin, xmax=zmax)
-  ax.set_ylim(ymin=xmin, ymax=xmax)
+  ax.set_xlim(left=zmin, right=zmax)
+  ax.set_ylim(bottom=xmin, top=xmax)
 
   ax.set_title('Step {:d}'.format(i))
   plt.tight_layout()
