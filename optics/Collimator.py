@@ -46,3 +46,54 @@ class Collimator():
     self.draw_max = np.array([segs[:,:,1].max(), segs[:,:,0].max()])
 
     return ls
+  
+  def transport(self, ray):
+    v0 = self.loc
+    n = self.norm
+    p0 = ray[0]
+    u = g.VectorNormalize(ray[1] - p0)
+    w = v0 - p0
+    s = n.dot(w) / n.dot(u)
+
+    ps = p0 + s * u
+    v = ps - v0
+    half_l = self.iR
+    half_2 = self.oR
+    L = np.sqrt(v[0]**2 + v[1]**2 + v[2]**2)
+    print(L)
+    if half_l <= L and L <= half_2:
+      output_ray = np.array([ps, ps])
+    else:
+      output_ray = np.array([ps, ps + u])
+    return output_ray
+
+
+  # def transport(self, ray):
+  #   v0 = self.loc
+  #   n = self.norm
+  #   p0 = ray[0]
+  #   u = g.VectorNormalize(ray[1] - p0)
+  #   w = v0 - p0
+  #   s = n.dot(w) / n.dot(u)
+
+  #   ps = p0 + s * u
+
+    # zs = ps[2]
+    # z0 = v0[2]
+    # half_l = self.iR
+    # half_2 = self.oR
+    # nx = np.abs(n[0])
+    # zmin = z0 - half_l * nx
+    # zmax = z0 + half_l * nx
+    # zmin2 = z0 - half_2 * nx
+    # zmax2 = z0 + half_2 * nx
+
+    # if zs >= zmin and zs <= zmax:
+    #   output_ray = np.array([ps, ps + u])
+    # elif zs >= zmin2 and zs <= zmax2:
+    #   output_ray = np.array([ps, ps + u])
+    # else:
+    #   output_ray = np.array([ps, ps + u])
+    # return output_ray
+
+    

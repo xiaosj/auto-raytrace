@@ -130,6 +130,16 @@ class FlatMirror():
 
     ps = p0 + s * u
 
-    refl_u = g.Reflection(u, n)
-    output_ray = np.array([ps, ps + refl_u])
+    zs = ps[2]
+    z0 = v0[2]
+    half_l = self.half_size[2]
+    nx = np.abs(n[0])
+    zmin = z0 - half_l * nx
+    zmax = z0 + half_l * nx
+
+    if zs >= zmin and zs <= zmax:
+      refl_u = g.Reflection(u, n)
+      output_ray = np.array([ps, ps + refl_u])
+    else:
+      output_ray = np.array([ps, ps + u])
     return output_ray
