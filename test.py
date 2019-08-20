@@ -53,7 +53,7 @@ for i in range(1):
     ax.add_collection(LineCollection([
           [ray_p0, ray_p1]
           ], linewidths = 0.5, colors = 'blue'))
-   
+
     out_ray = M1K3.transport(ray)
     print('Output ray', ir, ': ', out_ray)
     outray_p0 = [out_ray[0,2], out_ray[0,0]]
@@ -63,22 +63,16 @@ for i in range(1):
            [outray_p0, outray_p1]
            ], linewidths = 0.5, colors = 'blue'))
     
-    print('Input ray', ir, ': ', ray)
-    ray_p0 = [ray[0,2], ray[0,0]]
-    ray_p1 = [ray[1,2], ray[1,0]]
-    ax.add_collection(LineCollection([
-          [ray_p0, ray_p1]
-          ], linewidths = 0.5, colors = 'blue'))
-    
-    out_ray = PC1K3.transport(ray)
+    out_ray = PC1K3.transport(out_ray)
     print('Output ray', ir, ': ', out_ray)
+    ray_p1 = outray_p1
     outray_p0 = [out_ray[0,2], out_ray[0,0]]
     outray_p1 = [out_ray[1,2], out_ray[1,0]]
     ax.add_collection(LineCollection([
           [ray_p1, outray_p0],
           [outray_p0, outray_p1]
           ], linewidths = 0.5, colors = 'blue'))
-           
+
   # set drawing range with padding
   zpad = 0.02
   dz = zmax - zmin

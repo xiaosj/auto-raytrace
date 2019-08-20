@@ -7,27 +7,26 @@ from optics import *
 
 
 primary = np.array ([0., 0., 1.], dtype=np.float32)
-PC2S  = Collimator('PC2S', (1.2500, 0.0, 731.145), 0.016, 0.055)
-Src = CrissCrossSource((1.25, 0., 690.), PC2S.loc, 0.02, PC2S.iR*2)
-M1K3  = FlatMirror('M1K3',
-                   location=(1.2500, 0.0, 735.422), size=(0.02, 0.02, 1.0),
+PC1H  = Collimator('PC1H', (-1.2500, 0.0, 735.211), 0.008, 0.055)
+Src = CrissCrossSource((-1.25, 0., 690.), PC1H.loc, 0.02, PC1H.iR*2)
+M1LO  = FlatMirror('M1LO',
+                   location=(-1.2500, 0.0, 740.000), size=(0.02, 0.02, 1.0),
                    direction='x', A=-0.0098468, deltaA=(-0.00015, 0.00015),
                    translation=(-0.001, 0.001), incidentNorm=primary)
-primary = M1K3.out
+primary = M1LO.out
 print(primary)
-M2K3  = FlatMirror('M2K3',
-                   location=(1.2184, 0.0, 737.022), size=(0.02, 0.02, 1.0),
+M1L1  = FlatMirror('M1L1',
+                   location=(-1.227, 0.0, 741.600), size=(0.02, 0.02, 1.0),
                    direction='x', A=-0.0098468, deltaA=(-0.00015, 0.00015),
                    translation=(-0.001, 0.001), incidentNorm=primary)
 
-primary = M2K3.out
+primary = M1L1.out
 print(primary)
-PC1K3 = Collimator('PC1K3', (1.25, 0.0, 744.000), 0.008, 0.084)
-#PC1K3 = Collimator('PC1K3', (0.0, 0.0, 744.0), 0.008, 0.084) NORMAL COLLIMATOR SIZE
-PC1K3.setXYfromMirror(M2K3)
-PC2K3 = Collimator('PC2K3', (0.687, 0.0, 750.503), 0.0145, 0.084)
-comp_list = [Src, PC2S, M1K3, M2K3, PC1K3, PC2K3]
-transport_list = [M1K3, M2K3, PC1K3, PC2K3]
+PC1L1 = Collimator('PC1L1', (-1.114, 0.0, 745.621), 0.008, 0.084)
+PC1L1.setXYfromMirror(M1L1)
+PC2L1 = Collimator('PC2L1', (-1.00, 0.0, 749.616), 0.0145, 0.084)
+comp_list = [Src, PC1H, M1LO, M1L1, PC1L1, PC2L1]
+transport_list = [M1LO, M1L1, PC1L1, PC2L1]
 
 fig, ax = plt.subplots(figsize=(7,5), dpi=100, facecolor='white')
 xmin =  np.inf
@@ -44,7 +43,7 @@ for comp in comp_list:
 
 zmin = 730.0
 # draw 5 random rays
-for ir in range(20):
+for ir in range(500):
     # generate 1 ray
     ray = Src.getOneRay()
 #     print('Input ray', ir, ': ', ray)
@@ -54,7 +53,7 @@ for ir in range(20):
           [ray_p0, ray_p1]
           ], linewidths = 0.5, colors = 'blue'))
 
-    out_ray = M1K3.transport(ray)
+    out_ray = M1LO.transport(ray)
 #     print('Output ray', ir, ': ', out_ray)
     outray_p0 = [out_ray[0,2], out_ray[0,0]]
     outray_p1 = [out_ray[1,2], out_ray[1,0]]
@@ -63,7 +62,7 @@ for ir in range(20):
            [outray_p0, outray_p1]
            ], linewidths = 0.5, colors = 'blue')) 
 
-    out_ray = M2K3.transport(out_ray)
+    out_ray = M1L1.transport(out_ray)
 #     print('Output ray', ir, ': ', out_ray)
     ray_p1 = outray_p1
     outray_p0 = [out_ray[0,2], out_ray[0,0]]
@@ -73,7 +72,7 @@ for ir in range(20):
            [outray_p0, outray_p1]
            ], linewidths = 0.5, colors = 'blue')) 
 
-    out_ray = PC1K3.transport(out_ray)
+    out_ray = PC1L1.transport(out_ray)
 #     print('Output ray', ir, ': ', out_ray)
     ray_p1 = outray_p1
     outray_p0 = [out_ray[0,2], out_ray[0,0]]
@@ -83,7 +82,7 @@ for ir in range(20):
           [outray_p0, outray_p1]
           ], linewidths = 0.5, colors = 'blue'))
           
-    out_ray = PC2K3.transport(out_ray)
+    out_ray = PC2L1.transport(out_ray)
     #print('Output ray', ir, ': ', out_ray)
     ray_p1 = outray_p1
     outray_p0 = [out_ray[0,2], out_ray[0,0]]
@@ -108,7 +107,7 @@ xmin -= xpad * dx
 xmax += xpad * dx
 ax.set_xlim(left=zmin, right=zmax)
 ax.set_ylim(bottom=xmin, top=xmax)
-ax.set_title('TXI SXR')
+ax.set_title('TXI HXR')
 plt.tight_layout()
 
 plt.show()

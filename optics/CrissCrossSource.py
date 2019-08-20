@@ -48,3 +48,6 @@ class CrissCrossSource():
     self.draw_min = np.array([segs[:,:,1].min(), segs[:,:,0].min()])
     self.draw_max = np.array([segs[:,:,1].max(), segs[:,:,0].max()])
     return ls
+
+  def transport(self, ray):
+    pass

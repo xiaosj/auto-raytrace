@@ -121,8 +121,12 @@ class FlatMirror():
     return ls
 
   def transport(self, ray):
-    v0 = self.loc
-    n = self.norm
+    v0 = np.copy(self.loc)
+    n = np.copy(self.norm)
+    v0[0] += (self.trans[1] - self.trans[0]) * np.random.random() + self.trans[0] 
+    dA = (self.dA[1] - self.dA[0]) * np.random.random() + self.dA[0]
+    n = g.Ry(dA).dot(n)
+
     p0 = ray[0]
     u = g.VectorNormalize(ray[1] - p0)
     w = v0 - p0
@@ -139,7 +143,7 @@ class FlatMirror():
 
     if zs >= zmin and zs <= zmax:
       refl_u = g.Reflection(u, n)
-      output_ray = np.array([ps, ps + refl_u])
+      output_ray = np.array([ps, ps + refl_u * 0.1])
     else:
       output_ray = np.array([ps, ps + u])
     return output_ray
