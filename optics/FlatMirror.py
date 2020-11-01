@@ -1,8 +1,6 @@
 import numpy as np
 from matplotlib.collections import LineCollection
 
-import sys
-sys.path.append('..')
 import geometry as g
 
 class FlatMirror():
