@@ -5,7 +5,6 @@ from matplotlib.collections import LineCollection
 
 from optics import *
 
-
 primary = np.array ([0., 0., 1.], dtype=np.float32)
 PC2S  = Collimator('PC2S', (1.2500, 0.0, 731.145), 0.016, 0.055)
 Src = CrissCrossSource((1.25, 0., 690.), PC2S.loc, 0.02, PC2S.iR*2)
@@ -29,7 +28,9 @@ PC2K3 = Collimator('PC2K3', (0.687, 0.0, 750.503), 0.0145, 0.084)
 comp_list = [Src, PC2S, M1K3, M2K3, PC1K3, PC2K3]
 transport_list = [M1K3, M2K3, PC1K3, PC2K3]
 
-fig, ax = plt.subplots(figsize=(7,5), dpi=100, facecolor='white')
+np.random.seed(1)
+
+fig, ax = plt.subplots(figsize=(10,5), dpi=100, facecolor='white')
 xmin =  np.inf
 xmax = -np.inf
 zmin =  np.inf
@@ -44,7 +45,7 @@ for comp in comp_list:
 
 zmin = 730.0
 # draw 5 random rays
-for ir in range(20):
+for ir in range(200):
     # generate 1 ray
     ray = Src.getOneRay()
 #     print('Input ray', ir, ': ', ray)

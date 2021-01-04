@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib.collections import LineCollection
 
-import geometry as g
+from .geometry import *
 
 class CrissCrossSource():
   _cl = 'black'  # color on drawing

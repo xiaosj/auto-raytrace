@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib.collections import LineCollection
 
-import geometry as g
+from .geometry import *
 
 class Collimator():
   """ Class of donut-shape collimator pependicular to nominal direction
@@ -31,7 +31,7 @@ class Collimator():
   def drawZX(self):
     """ Draw component on the Z-X plane (horizontal)
     """
-    rot = g.rot2D(self.norm[0])
+    rot = rot2D(self.norm[0])
     p0 = np.array([self.loc[2], self.loc[0]])
     v1 = rot.dot([0., self.iR])
     v2 = rot.dot([0., self.oR])
@@ -49,7 +49,7 @@ class Collimator():
     v0 = self.loc
     n = self.norm
     p0 = ray[0]
-    u = g.VectorNormalize(ray[1] - p0)
+    u = VectorNormalize(ray[1] - p0)
     w = v0 - p0
     s = n.dot(w) / n.dot(u)
 
